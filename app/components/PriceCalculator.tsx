@@ -21,10 +21,20 @@ function calculateEmi(principal: number, months: number): number {
   return Math.round(emi);
 }
 
+function formatCurrency(value: number): string {
+  return `₹ ${value.toLocaleString("en-IN")}`;
+}
+
+function getSliderBackground(value: number, min: number, max: number): string {
+  const percentage = ((value - min) / (max - min)) * 100;
+  return `linear-gradient(to right, #6c2bd9 0%, #6c2bd9 ${percentage}%, #e5d5ff ${percentage}%, #e5d5ff 100%)`;
+}
+
 const PriceCalculator: React.FC = () => {
-  const [loanAmount, setLoanAmount] = useState(1060800); // like screenshot
+  const [loanAmount, setLoanAmount] = useState(1060800);
   const [downPayment, setDownPayment] = useState(265200);
-  const [duration, setDuration] = useState(66); // months
+  const [duration, setDuration] = useState(66);
+  const [showBreakup, setShowBreakup] = useState(false);
 
   const principal = useMemo(
     () => Math.max(loanAmount - downPayment, 0),
@@ -36,25 +46,23 @@ const PriceCalculator: React.FC = () => {
     [principal, duration]
   );
 
+  const totalPayment = emi * duration;
+  const totalInterest = totalPayment - principal;
+
   return (
-    <div className="calculator emi-calculator">
-      {/* Top header: Check Eligibility + close */}
+    <div className="emi-calculator">
+      {/* Header */}
       <div className="emi-header">
-        <h2 className="emi-header-title">Check Eligibility</h2>
-        <button className="emi-close-btn" aria-label="Close">
-          ✕
-        </button>
+        <h2 className="emi-header-title">EMI Calculator</h2>
       </div>
 
       <div className="emi-body">
-        <h3 className="emi-title">EMI Calculator</h3>
-
         {/* Loan Amount */}
         <div className="field">
           <div className="field-label-row">
             <label>Loan Amount</label>
-            <span className="field-value field-value-accent">
-              ₹ {loanAmount.toLocaleString("en-IN")}
+            <span className="field-value-accent">
+              {formatCurrency(loanAmount)}
             </span>
           </div>
           <input
@@ -64,6 +72,9 @@ const PriceCalculator: React.FC = () => {
             step={10000}
             value={loanAmount}
             onChange={(e) => setLoanAmount(Number(e.target.value))}
+            style={{
+              background: getSliderBackground(loanAmount, MIN_LOAN, MAX_LOAN),
+            }}
           />
           <div className="field-range">
             <span>₹ 1,00,000</span>
@@ -75,8 +86,8 @@ const PriceCalculator: React.FC = () => {
         <div className="field">
           <div className="field-label-row">
             <label>Down Payment*</label>
-            <span className="field-value field-value-accent">
-              ₹ {downPayment.toLocaleString("en-IN")}
+            <span className="field-value-accent">
+              {formatCurrency(downPayment)}
             </span>
           </div>
           <input
@@ -86,6 +97,9 @@ const PriceCalculator: React.FC = () => {
             step={10000}
             value={downPayment}
             onChange={(e) => setDownPayment(Number(e.target.value))}
+            style={{
+              background: getSliderBackground(downPayment, MIN_DOWN, MAX_DOWN),
+            }}
           />
           <div className="field-range">
             <span>₹ 0</span>
@@ -97,9 +111,7 @@ const PriceCalculator: React.FC = () => {
         <div className="field">
           <div className="field-label-row">
             <label>Duration of Loan</label>
-            <span className="field-value field-value-accent">
-              {duration} Months
-            </span>
+            <span className="field-value-accent">{duration} Months</span>
           </div>
           <input
             type="range"
@@ -108,6 +120,13 @@ const PriceCalculator: React.FC = () => {
             step={6}
             value={duration}
             onChange={(e) => setDuration(Number(e.target.value))}
+            style={{
+              background: getSliderBackground(
+                duration,
+                MIN_DURATION,
+                MAX_DURATION
+              ),
+            }}
           />
           <div className="field-range">
             <span>12 Months</span>
@@ -115,27 +134,50 @@ const PriceCalculator: React.FC = () => {
           </div>
         </div>
 
-        {/* EMI result */}
+        {/* EMI Result */}
         <div className="emi-result">
-          <span className="emi-amount">
-            ₹ {emi.toLocaleString("en-IN")}
-          </span>
+          <span className="emi-amount">{formatCurrency(emi)}</span>
           <span className="emi-per-month">per month</span>
         </div>
 
-        {/* Loan breakup row */}
-        <button className="emi-breakup" type="button">
-          <span className="emi-breakup-icon">📊</span>
-          <span>View Loan Breakup</span>
+        {/* Loan Breakup */}
+        <button
+          className="emi-breakup"
+          onClick={() => setShowBreakup(!showBreakup)}
+          type="button"
+        >
+          <span>📊</span>
+          <span>{showBreakup ? "Hide" : "View"} Loan Breakup</span>
         </button>
 
-        {/* Big CTA button */}
-        <button className="primary-btn emi-btn" type="button">
-          <span className="emi-btn-icon">🟡</span>
-          <span>Check eligibility</span>
+        {showBreakup && (
+          <div className="emi-breakup-details">
+            <div className="breakup-row">
+              <span className="breakup-label">Principal Amount:</span>
+              <span className="breakup-value">{formatCurrency(principal)}</span>
+            </div>
+            <div className="breakup-row">
+              <span className="breakup-label">Total Interest:</span>
+              <span className="breakup-value">
+                {formatCurrency(totalInterest)}
+              </span>
+            </div>
+            <div className="breakup-row">
+              <span>Total Payment:</span>
+              <span className="breakup-total">
+                {formatCurrency(totalPayment)}
+              </span>
+            </div>
+          </div>
+        )}
+
+        {/* CTA Button */}
+        <button className="primary-btn" type="button">
+          <span>✓</span>
+          <span>Check Eligibility</span>
         </button>
 
-        {/* Footnote text */}
+        {/* Footnote */}
         <p className="emi-note">
           *Rate of interest can vary subject to credit profile. Loan approval is
           at the sole discretion of the finance partner.
