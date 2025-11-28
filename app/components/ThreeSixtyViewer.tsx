@@ -21,13 +21,6 @@ const ThreeSixtyViewer: React.FC = () => {
   const isDragging = useRef(false);
   const lastX = useRef(0);
 
-  const changeFrame = (direction: 1 | -1) => {
-    setIndex((prev) => {
-      const next = (prev + direction + FRAMES.length) % FRAMES.length;
-      return next;
-    });
-  };
-
   const handleDragStart = (clientX: number) => {
     isDragging.current = true;
     lastX.current = clientX;
@@ -37,8 +30,9 @@ const ThreeSixtyViewer: React.FC = () => {
     if (!isDragging.current) return;
     const deltaX = clientX - lastX.current;
 
-    if (Math.abs(deltaX) > 10) {
-      changeFrame(deltaX > 0 ? 1 : -1);
+    if (Math.abs(deltaX) > 15) {
+      const direction = deltaX > 0 ? 1 : -1;
+      setIndex((prev) => (prev + direction + FRAMES.length) % FRAMES.length);
       lastX.current = clientX;
     }
   };
@@ -60,10 +54,10 @@ const ThreeSixtyViewer: React.FC = () => {
     >
       <img
         src={FRAMES[index]}
-        alt={`360° view ${index + 1}`}
+        alt={`360° view frame ${index + 1}`}
         className="viewer-360-image"
       />
-      <p className="viewer-360-hint">Drag left or right to rotate</p>
+      <p className="viewer-360-hint">← Drag to rotate →</p>
     </div>
   );
 };

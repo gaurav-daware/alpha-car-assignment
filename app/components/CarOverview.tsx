@@ -12,27 +12,28 @@ type CarOverviewProps = {
 };
 
 const CarOverview: React.FC<CarOverviewProps> = ({ car }) => {
+  const details = [
+    { label: "Model", value: car.model },
+    { label: "Year", value: car.year.toString() },
+    { label: "Mileage", value: car.mileage },
+  
+    { label: "Price", value: car.price, highlight: true },
+  ];
+
   return (
     <div className="car-overview">
       <h2 className="section-title">Car Overview</h2>
-      <dl className="car-details">
-        <div className="detail-row">
-          <dt>Model</dt>
-          <dd>{car.model}</dd>
-        </div>
-        <div className="detail-row">
-          <dt>Year</dt>
-          <dd>{car.year}</dd>
-        </div>
-        <div className="detail-row">
-          <dt>Mileage</dt>
-          <dd>{car.mileage}</dd>
-        </div>
-        <div className="detail-row">
-          <dt>Price</dt>
-          <dd>{car.price}</dd>
-        </div>
-      </dl>
+      <div className="car-details">
+        {details.map((detail, index) => (
+          <div
+            key={index}
+            className={`detail-row ${detail.highlight ? "highlight" : ""}`}
+          >
+            <dt>{detail.label}</dt>
+            <dd>{detail.value}</dd>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

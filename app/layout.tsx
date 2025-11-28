@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Spinny Assignment",
-  description: "Front-end internship assignment – car detail page",
+  title: "Spinny - Used Car Detail",
+  description: "Buy certified used cars with warranty and assured quality",
 };
 
 export default function RootLayout({
@@ -15,10 +15,10 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <header className="app-header">
-          <div className="logo">Spinny Clone</div>
+          <div className="logo">Spinny</div>
           <nav className="nav">
-            <span>Buy car</span>
-            <span>Sell car</span>
+            <span>Buy Car</span>
+            <span>Sell Car</span>
             <span>Service</span>
           </nav>
         </header>
