@@ -40,7 +40,7 @@ const ImageCarousel: React.FC = () => {
           </button>
 
           <button className="view360-btn" onClick={() => setShow360Modal(true)}>
-            🔄 View 360°
+            View 360°
           </button>
 
           <div className="carousel-counter">
