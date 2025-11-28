@@ -4,8 +4,6 @@ export type Car = {
   model: string;
   year: number;
   mileage: string;
-  fuelType: string;
-  transmission: string;
   price: string;
 };
 
@@ -18,8 +16,7 @@ const CarOverview: React.FC<CarOverviewProps> = ({ car }) => {
     { label: "Model", value: car.model },
     { label: "Year", value: car.year.toString() },
     { label: "Mileage", value: car.mileage },
-    { label: "Fuel Type", value: car.fuelType },
-    { label: "Transmission", value: car.transmission },
+  
     { label: "Price", value: car.price, highlight: true },
   ];
 

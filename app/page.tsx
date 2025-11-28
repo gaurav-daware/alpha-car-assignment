@@ -6,8 +6,6 @@ const carData: Car = {
   model: "Mahindra Thar LX 4-Str Hard Top Diesel MT 4WD",
   year: 2021,
   mileage: "13K km",
-  fuelType: "Diesel",
-  transmission: "Manual",
   price: "₹13.26 Lakh",
 };
 
