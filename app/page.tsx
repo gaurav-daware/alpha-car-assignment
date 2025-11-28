@@ -18,7 +18,7 @@ export default function HomePage() {
       </section>
 
       {/* Right: Price calculator + Car overview */}
-      <section className="right-panel">
+      <section style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }} className="right-panel">
         <div className="card">
           <PriceCalculator />
         </div>
