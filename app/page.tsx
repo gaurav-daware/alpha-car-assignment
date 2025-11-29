@@ -13,8 +13,14 @@ export default function HomePage() {
   return (
     <div className="page">
       {/* Left Panel: Picture Scroll + 360 Button */}
-      <section className="card">
+      <section style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+        <div className="card">
         <ImageCarousel />
+        </div>
+
+         <div className="card">
+          <CarOverview car={carData} />
+        </div>
       </section>
 
       {/* Right Panel: Price Calculator + Car Overview */}
@@ -22,9 +28,9 @@ export default function HomePage() {
         <div className="card">
           <PriceCalculator />
         </div>
-        <div className="card">
+        {/* <div className="card">
           <CarOverview car={carData} />
-        </div>
+        </div> */}
       </section>
     </div>
   );
